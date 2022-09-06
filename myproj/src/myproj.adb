@@ -1,3 +1,5 @@
+--Samarbetat med steku219 (Stefan Kulevski)
+
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Float_Text_IO; use Ada.Float_Text_IO;
@@ -10,56 +12,57 @@ procedure Ada_O1_2 is
    Moms : Float;
    Pris_Med_Moms : Float;
    Stegraknare : Float;
-   Iterationer : Float;
 
 begin
-   Put("Första pris: ");
-   Get(Forsta_Pris);
-   while Forsta_Pris < 0.0 loop
-      Skip_Line;
-      Put("Felaktigt värde!");
-      New_Line;
+   loop
       Put("Första pris: ");
       Get(Forsta_Pris);
+      if Forsta_Pris < 0.0 then
+         Put_Line("Felaktigt värde!");
+      else
+         exit;
+      end if;
    end loop;
 
-   Put("Sista pris: ");
-   Get(Sista_Pris);
-   while Sista_Pris < 0.0 or Sista_Pris < Forsta_Pris loop
-      Skip_Line;
-      Put("Felaktigt värde!");
-      New_Line;
+   loop
       Put("Sista pris: ");
       Get(Sista_Pris);
+      if Sista_Pris < 0.0 or Sista_Pris < Forsta_Pris then
+         Put_Line("Felaktigt värde!");
+      else
+         exit;
+      end if;
    end loop;
 
-   Put("Steg: ");
-   Get(Steg);
-   while Steg < 0.0 loop
-      Skip_Line;
-      Put("Felaktigt värde!");
-      New_Line;
+   loop
       Put("Steg: ");
       Get(Steg);
+      if Steg < 0.1 then
+         Put_Line("Felaktigt värde!");
+      else
+         exit;
+      end if;
    end loop;
 
-   Put("Momsprocent: ");
-   Get(Momsprocent);   
+   loop
+      Put("Momsprocent: ");
+      Get(Momsprocent);
+      if Momsprocent < 0.0 or Momsprocent > 100.0 then
+         Put_Line("Felaktigt värde!");
+      else
+         exit;
+      end if;
+      end loop;
    New_Line;
 
    Put_Line("============ Momstabell ============");
-   Put("Pris utan moms  ");
-   Put("Moms   ");
-   Put("Pris med moms   ");
-   New_Line;
+   Put_Line("Pris utan moms  Moms   Pris med moms");
 
    Momsprocent := Momsprocent / 100.0 ;
    Moms := Momsprocent * Forsta_Pris;
    Pris_Med_Moms := Forsta_Pris + Moms;
 
-   while (Stegraknare <= Sista_Pris) loop
-      Stegraknare := Forsta_Pris + Steg;
-      
+   while (Forsta_Pris <= Sista_Pris) loop
       Put(Forsta_Pris, Fore => 6, Aft => 2, Exp => 0);
       Forsta_Pris := Forsta_Pris + Steg;
 
