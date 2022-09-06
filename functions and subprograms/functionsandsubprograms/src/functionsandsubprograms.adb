@@ -1,55 +1,29 @@
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
-procedure HP is
+procedure Go is
+Selection : Integer;
+A : Integer;
 
-procedure Get_Int(A,B,C,D,E : out Integer is
+procedure Menu_Selection (Selection : out Integer) is
 begin
-Get(A);
-Get(B);
-Get(C);
-Get(D);
-Get(E);
-end Get_Int;
+   --Put("Välkommen till miniräknaren");
+   --Put_Line("=== HUVUDMENY ===");
+   --Put_Line("1. Beräkna hopotenusa");
+   --Put_Line("2. Beräkna triangelvinklar");
+   --Put_Line("3. Beräkna N-fakultet");
+   --Put_Line("4. Avlsuta programmet");
+   --Put_Line("Val: ");
+      Get(Selection);
+      Put(Selection);
+end Menu_Selection;
 
-procedure Get_Safe (X : out Integer) is
+--procedure Hypothenuse_Program (Katet1, Katet2 : out Integer) is
+--begin
+
+
+
 begin
-    loop
-    Get(X);
-        if ok(X) = True then
-            exit;
-        end if;
-    end loop;
+Menu_Selection(A);
 
-end Get_Safe;
-
-function Summera(A,B,C,D,E : in Integer) return Integer is
-    Sum : Integer;
-    begin
-    Sum := A+B+C+D+E;
-    return Sum;
-end Summera;
-
-function OK (X : in Integer) return Boolean is
-    begin
-        if x > 0 then
-            return True;
-        end if;
-    return False;
-end ok;
-
-procedure Utskrift(X : in Integer) is
-begin
-Put(X);
-end Utskrift;
-
-A,B,C,D,E : Integer;
-Sum : Integer;
-begin
-               --I Begin hämtar vi underprogram
-Get_Int(A,B,C,D,E);
-Sum := Summera(A,B,C,D,E);
-Utskrift(Sum);
-
-end HP;
-
-
+end Go;
