@@ -23,24 +23,40 @@ procedure program is
       New_Line;
    end Hypotenuse_Program;
 
+   procedure Calculate_Angles (Hc, Sa : in Float; 
+                              Va, Vb, Vc : out Float) is
+   begin
+         Vc := 90.0;
+         Va := Arccos(Sa / Hc);
+         Vb := 180.0 / Vc - Va;
+   end Calculate_Angles;
+
    procedure Angle_Program is
-      Hypotenusa : Float;
-      Vertikal_Katet_Langd : Float;
+   Hc, Sa, Va, Vb, Vc : Float;
       begin
+      
          Put("Mata in hypotenusans längd: ");
-         Get(Hypotenusa);
+         Get(Hc);
          Put("Mata in vertikala katetens längd: ");
-         Get(Vertikal_Katet_Langd);
+         Get(Sa);
+         Calculate_Angles(Hc,Sa,Va,Vb,Vc);
+         Put("Va: ");
+         Put(Va, Fore => 2, Aft => 1, Exp => 0);
+         Put(" grader");
+         New_Line;
+         Put("Vb: ");
+         Put(Vb, Fore => 2, Aft => 1, Exp => 0);
+         Put(" grader");
+         New_Line;
+         Put("Vc: ");
+         Put(Vc, Fore => 2, Aft => 1, Exp => 0);
+         Put(" grader");
    end Angle_Program;
 
-   procedure Calculate_Angles (Hc, Sa, Va, Vb, Vc : in Float) return float is
-      begin
-
-   end Calculate_Angles;   
    procedure Menu_Selection (Selection : out Integer) is
    begin
       Put_Line("=== HUVUDMENY ===");
-      Put_Line("1. Beräkna hopotenusa");
+      Put_Line("1. Beräkna hypotenusa");
       Put_Line("2. Beräkna triangelvinklar");
       Put_Line("3. Beräkna N-fakultet");
       Put_Line("4. Avlsuta programmet");
