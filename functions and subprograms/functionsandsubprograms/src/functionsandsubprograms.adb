@@ -18,40 +18,62 @@ procedure program is
       Put("Mata in kateternas längder: ");
       Get(A);
       Get(B);
-      Put("Hypotenusan är: ");
+      Put("Hypotenusan är ");
       Put(Calculate_Hypothenuse(A, B), 0,2,0);
-      New_Line;
+      New_Line(2);
    end Hypotenuse_Program;
 
    procedure Calculate_Angles (Hc, Sa : in Float; 
                               Va, Vb, Vc : out Float) is
    begin
          Vc := 90.0;
-         Va := Arccos(Sa / Hc);
-         Vb := 180.0 / Vc - Va;
+         Vb := ((Arccos(Sa / Hc)) / Pi * 180.0);
+         Va := ((Arcsin(Sa / Hc)) / Pi * 180.0);
    end Calculate_Angles;
 
    procedure Angle_Program is
    Hc, Sa, Va, Vb, Vc : Float;
       begin
-      
          Put("Mata in hypotenusans längd: ");
          Get(Hc);
          Put("Mata in vertikala katetens längd: ");
          Get(Sa);
          Calculate_Angles(Hc,Sa,Va,Vb,Vc);
          Put("Va: ");
-         Put(Va, Fore => 2, Aft => 1, Exp => 0);
+         Put(Va, Fore => 1, Aft => 1, Exp => 0);
          Put(" grader");
          New_Line;
          Put("Vb: ");
-         Put(Vb, Fore => 2, Aft => 1, Exp => 0);
+         Put(Vb, Fore => 1, Aft => 1, Exp => 0);
          Put(" grader");
          New_Line;
          Put("Vc: ");
-         Put(Vc, Fore => 2, Aft => 1, Exp => 0);
+         Put(Vc, Fore => 1, Aft => 1, Exp => 0);
          Put(" grader");
+         New_Line(2);
    end Angle_Program;
+
+   function Calculate_Factorial (N : in Integer) return Integer is
+   Fak : Integer := 1;
+   begin
+      for I in 1..N loop
+         Fak := Fak * I;
+      end loop;
+      return Fak;
+   end Calculate_Factorial;
+
+   procedure Factorial_Program is
+   N,N1 : Integer;
+   
+   begin
+      Put("Mata in N: ");
+      Get(N);
+      Put(N, Width => 0);
+      Put( "-fakultet = ");
+      N1 := (Calculate_Factorial(N));
+      Put(N1, Width => 0);
+      New_Line(2);
+   end Factorial_Program;
 
    procedure Menu_Selection (Selection : out Integer) is
    begin
@@ -59,7 +81,7 @@ procedure program is
       Put_Line("1. Beräkna hypotenusa");
       Put_Line("2. Beräkna triangelvinklar");
       Put_Line("3. Beräkna N-fakultet");
-      Put_Line("4. Avlsuta programmet");
+      Put_Line("4. Avsluta programmet");
       loop
          Put("Val: ");
          Get(Selection);
@@ -74,19 +96,22 @@ procedure program is
       end Menu_Selection;
    
    Selection : Integer;
-   A : Integer;
-   B : Integer;
-   Hypothenuse : Float;
 
 begin
-   Put_Line("Välkommen till miniräknaren");
-   Menu_Selection(Selection);
+   Put_Line("Välkommen till miniräknaren!");
+   loop
+      Menu_Selection(Selection);
 
-   if Selection = 1 then
-      Hypotenuse_Program;
-   elsif Selection = 2 then
-      Angle_Program;
-  end if;
-      
+      if Selection = 1 then
+         Hypotenuse_Program;
+      elsif Selection = 2 then
+         Angle_Program;
+      elsif Selection = 3 then
+         Factorial_Program;
+      elsif Selection = 4 then
+         Put("Ha en bra dag!");
+         exit;
+      end if;
+   end loop;
 
 end program;
