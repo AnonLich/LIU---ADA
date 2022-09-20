@@ -53,5 +53,3 @@ Sum := Summera(A,B,C,D,E);
 Utskrift(Sum);
 
 end HP;
-
-
