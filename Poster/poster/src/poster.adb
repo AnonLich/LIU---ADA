@@ -40,13 +40,12 @@ procedure HP is
          O : DS3_Inner2;
       end record;
 
-   procedure Get (W : out Character;
-		            P : out String) is
+   procedure Get (Data : out DS1) is
    Cr : Character;
    begin
-      Get(W);
+      Get(Data.W);
       Get(Cr);
-      Get(P);
+      Get(Data.P);
    end Get;
 
    procedure Put (DS : in DS1) is
@@ -124,7 +123,9 @@ procedure HP is
    procedure Put (DS : in DS3) is
    begin
       Put(DS.J);
+      Put(" ");
       Put(DS.B);
+      Put(" ");
       Put(DS.O);
    end Put;
 
@@ -138,6 +139,7 @@ procedure HP is
    procedure Put (DS : in DS2) is
    begin
       Put(DS.D);
+      Put(" ");
       Put(DS.U);
    end Put;
 
@@ -148,7 +150,7 @@ procedure HP is
 begin
    Put_Line("För DS1:");
    Put("Mata in datamängd: ");
-   Get(Datastruktur1.W, Datastruktur1.P);
+   Get(Datastruktur1);
    Put("Inmatad datamängd: ");
    Put(Datastruktur1);
    New_Line(2);
@@ -157,19 +159,12 @@ begin
    Put("Mata in datamängd: ");
    Get(Datastruktur2);
    Put("Inmatad datamängd: ");
-   Put(Datastruktur2.D);
-   Put(" ");
-   Put(Datastruktur2.U);
+   Put(Datastruktur2);
    New_Line(2);
 
    Put_Line("För DS3:");
    Put("Mata in datamängd: ");
    Get(Datastruktur3);
    Put("Inmatad datamängd: ");
-   Put(Datastruktur3.J);
-   Put(" ");
-   Put(Datastruktur3.B);
-   Put(" ");
-   Put(Datastruktur3.O);
-
+   Put(Datastruktur3);
 end HP;

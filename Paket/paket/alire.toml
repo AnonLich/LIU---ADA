@@ -1,0 +1,9 @@
+name = "paket"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Melvin"]
+maintainers = ["Melvin <melvin_02@hotmail.se>"]
+maintainers-logins = ["AnonLich"]
+
+executables = ["paket"]
