@@ -16,22 +16,23 @@ procedure Duggap2v2 is
    procedure Kalkykera_Kvot (Tecken : in Character;
                               Flt : out Float) is
    begin
-      Flt := Float'Ceiling(Float'Value((1 => Tecken)) / 32.7);
+      Flt := Float'Floor(Float'Value((1 => Tecken)) / 32.7);
       Put(Flt, Fore => 0, Aft => 0, Exp => 0);
    end Kalkykera_Kvot;
 
 --DEL3      OPERATOR
 function "/" (Left : in Character;
-               Right : in String) return Float is
-   CI : Float;
-   SI : Float := Float'Value(Right);
+               Right : in String) return Integer is
+   CI : Integer;
+   SI : Integer := Integer'Value(Right);
    begin
-      SI := Float(Float'Floor(Float'value(Right)));
-      CI := Float(Integer(Float'Value((1 => Left))));
+      SI := Integer(Float'Floor(Float'value(Right)));
+      CI := Integer(Float'Value((1 => Left)));
       return (CI / SI) ;
    end "/";
 
 --VARIABELDEKLARATION
+
    Str : String(1..3);
    Tecken : Character;
    Flt : Float;
@@ -61,6 +62,6 @@ begin
    Put(" och ");
    Put(Str);
    Put(" blir ");
-   Put(Tecken / Str, Fore => 1, Aft => 1, Exp => 0);
+   Put(Tecken / Str);
 
 end Duggap2v2;
