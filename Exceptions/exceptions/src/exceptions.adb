@@ -1,3 +1,4 @@
+-- melpa661: Arbetat enskilt
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
@@ -22,14 +23,14 @@ procedure Test_Exceptions is
      array(1 .. 5) of Date_Type;
 
    type Day_Check_Type is 
-      array (1..12) of Integer;
+     array (1..12) of Integer;
 
    Arr_Check : constant Day_Check_Type := (31,28,31,30,31,30,31,31,30,31,30,31);
 
    --PROCEDURES AND FUNCTIONS
    --DEL 1
    procedure Get_Value_Safe (Min, Max : in Integer;
-                           Value : out Integer) is
+			     Value : out Integer) is
    begin
       loop
          Put("Mata in värde (");
@@ -46,10 +47,10 @@ procedure Test_Exceptions is
             else
                exit;
             end if;
-      exception
-         when Data_Error => 
-            Put("Fel datatyp. ");
-            Skip_Line;
+	 exception
+	    when Data_Error => 
+	       Put("Fel datatyp. ");
+	       Skip_Line;
          end;
       end loop;
    end Get_Value_Safe;
@@ -67,6 +68,25 @@ procedure Test_Exceptions is
       New_Line(2);
       Skip_Line;
    end Del1;
+
+   --DEL 2
+   procedure Get (Item : out String) is
+      Ch : Character;
+   begin
+      Get(Ch);
+      while Ch = ' ' loop
+         Get(Ch);
+      end loop;
+      begin 
+         Item(Item'First) := Ch;
+         for I in Item'First + 1..Item'Last loop
+            Get(Item(I));
+            if I < Item'Last and End_Of_Line then
+               raise Length_Error;
+            end if;
+         end loop;
+      end;
+   end Get;
 
    procedure Del2 (S_1,S_2,S_3 : out String) is
    begin
@@ -102,64 +122,45 @@ procedure Test_Exceptions is
       end if;
    end Return_Days;
 
-   --DEL 2
-   procedure Get (Item : out String) is
-   Ch : Character;
-   begin
-      Get(Ch);
-      while Ch = ' ' loop
-         Get(Ch);
-      end loop;
-      begin 
-         Item(Item'First) := Ch;
-         for I in Item'First + 1..Item'Last loop
-            Get(Item(I));
-            if I < Item'Last and End_Of_Line then
-               raise Length_Error;
-            end if;
-         end loop;
-      end;
-   end Get;
-
    --DEL 3
    procedure Format_Error_Subprogram (S : in String) is
    begin
       for I in S'Range loop
-         if I in 1..4 or I in 6..7 or I in 9..10 then
-            if S(I) not in '0' .. '9' then
-               raise Format_Error;
-            end if;
-         end if;
+	      if I in 1..4 or I in 6..7 or I in 9..10 then
+	         if S(I) not in '0' .. '9' or S(5) /= '-' or S(8) /= '-' then
+	            raise Format_Error;
+	         end if;
+	      end if; 
       end loop;
    end Format_Error_Subprogram;
 
    procedure YMD (Item : in Date_Type) is
    begin
       if Item.Year not in 1532..9000 then
-            raise Year_Error;
-         end if;
-         if Item.Month not in 1..12 then
-            raise Month_Error;
-         end if;
-         if Item.Day not in 1..Return_Days(Item) then
-            raise Day_Error;
-         end if;
+	 raise Year_Error;
+      end if;
+      if Item.Month not in 1..12 then
+	 raise Month_Error;
+      end if;
+      if Item.Day not in 1..Return_Days(Item) then
+	 raise Day_Error;
+      end if;
    end YMD;
 
    procedure Get (Item : out Date_Type) is
       S : String(1..10);
-      begin
-         Get(S);
-         Format_Error_Subprogram(S);
-         Item.Year  := Integer'Value(S(1..4));
-         Item.Month := Integer'Value(S(6..7));
-         Item.Day   := Integer'Value(S(9..10));
-         YMD(Item);
-      end Get;
+   begin
+      Get(S);
+      Format_Error_Subprogram(S);
+      Item.Year  := Integer'Value(S(1..4));
+      Item.Month := Integer'Value(S(6..7));
+      Item.Day   := Integer'Value(S(9..10));
+      YMD(Item);
+   end Get;
 
    procedure Put (Item : in Date_Type) is      
       type Date_Elements is 
-         array (1..3) of Integer;
+	array (1..3) of Integer;
       Date_E : Date_Elements;
    begin
       Date_E := (Item.Year,Item.Month,Item.Day);
@@ -186,18 +187,16 @@ procedure Test_Exceptions is
                Get(Dates(I));
                exit;
             exception
+               when Length_Error =>
+                  Put("Felaktigt format! ");
                when Format_Error =>
                   Put("Felaktigt format! ");
-                  Skip_Line;
                when Year_Error =>
                   Put("Felaktigt år! ");
-                  Skip_Line;
                when Month_Error =>
                   Put("Felaktig månad! ");
-                  Skip_Line;
                when Day_Error =>
                   Put("Felaktig dag! ");
-                  Skip_Line;
             end;
          end loop;
       end loop;
@@ -225,7 +224,8 @@ begin
    Del2(S_1,S_2,S_3);
    Get(Dates);
    Put(Dates);
-   exception
-      when Length_Error =>
+exception
+   when Length_Error =>
       Put("För få inmatade tecken!");
+
 end Test_Exceptions;
