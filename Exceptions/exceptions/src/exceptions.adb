@@ -1,22 +1,19 @@
--- melpa661: Arbetat enskilt
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Ada.Exceptions;  use Ada.Exceptions;
+-- melpa661: Samarbetat med simgu167, Simeon Gustafsson, samma program
+with Ada.Text_IO;          use Ada.Text_IO;
+with Ada.Integer_Text_IO;  use Ada.Integer_Text_IO;
 
 procedure Test_Exceptions is
    --Exceptions
    Length_Error : exception;
    Format_Error : exception;
-   Year_Error : exception;
-   Month_Error : exception;
-   Day_Error : exception;
+   Year_Error   : exception;
+   Month_Error  : exception;
+   Day_Error    : exception;
 
    --TYPES
    type Date_Type is
       record
-         Year,Month,Day : Integer;
+         Year, Month, Day : Integer;
       end record;
 
    type Date_Arr_Type is
@@ -40,7 +37,7 @@ procedure Test_Exceptions is
          Put("): ");
          begin
             Get(Value);
-            if Value < Min then
+            if Value    < Min then
                Put("För litet värde. ");
             elsif Value > Max then
                Put("För stort värde. ");
@@ -73,17 +70,19 @@ procedure Test_Exceptions is
    procedure Get (Item : out String) is
       Ch : Character;
    begin
-      Get(Ch);
-      while Ch = ' ' loop
+      loop
          Get(Ch);
+         if Ch /= ' ' then
+            exit;
+         end if;
       end loop;
       begin 
          Item(Item'First) := Ch;
          for I in Item'First + 1..Item'Last loop
+               if End_of_Line then
+                  raise Length_Error;
+               end if;
             Get(Item(I));
-            if I < Item'Last and End_Of_Line then
-               raise Length_Error;
-            end if;
          end loop;
       end;
    end Get;
@@ -126,24 +125,24 @@ procedure Test_Exceptions is
    procedure Format_Error_Subprogram (S : in String) is
    begin
       for I in S'Range loop
-	      if I in 1..4 or I in 6..7 or I in 9..10 then
-	         if S(I) not in '0' .. '9' or S(5) /= '-' or S(8) /= '-' then
-	            raise Format_Error;
-	         end if;
-	      end if; 
+         if I in 1..4 or I in 6..7 or I in 9..10 then
+            if S(I) not in '0' .. '9' then
+               raise Format_Error;
+            end if;
+         elsif S(I) /= '-' then
+            raise Format_Error;
+         end if;
       end loop;
    end Format_Error_Subprogram;
 
    procedure YMD (Item : in Date_Type) is
    begin
       if Item.Year not in 1532..9000 then
-	 raise Year_Error;
-      end if;
-      if Item.Month not in 1..12 then
-	 raise Month_Error;
-      end if;
-      if Item.Day not in 1..Return_Days(Item) then
-	 raise Day_Error;
+	      raise Year_Error;
+      elsif Item.Month not in 1..12 then
+	      raise Month_Error;
+      elsif Item.Day not in 1..Return_Days(Item) then
+	      raise Day_Error;
       end if;
    end YMD;
 
@@ -156,23 +155,27 @@ procedure Test_Exceptions is
       Item.Month := Integer'Value(S(6..7));
       Item.Day   := Integer'Value(S(9..10));
       YMD(Item);
+      exception
+         when Length_Error =>
+            raise Format_Error;
    end Get;
 
-   procedure Put (Item : in Date_Type) is      
-      type Date_Elements is 
-	array (1..3) of Integer;
-      Date_E : Date_Elements;
+   procedure Check_10 (Item : in Integer) is
    begin
-      Date_E := (Item.Year,Item.Month,Item.Day);
-      for I in Date_E'Range loop
-         if I in 2..3 and Date_E(I) < 10 then
-            Put("0");
-         end if;
-         Put(Date_E(I), Width => 0);
-         if I /= Date_E'Last then
-            Put("-");
-         end if;
-      end loop;
+      if Item < 10 then
+         Put(0, Width => 0);
+      end if;
+   end Check_10;
+
+   procedure Put (Item : in Date_Type) is
+   begin
+   Put(Item.Year, Width => 0);
+   Put('-');
+   Check_10(Item.Month);
+   Put(Item.Month, Width => 0);
+   Put('-');
+   Check_10(Item.Day);
+   Put(Item.Day, Width => 0);
    end Put;
 
    procedure Get (Dates : out Date_Arr_Type) is --GET för del3
@@ -187,8 +190,6 @@ procedure Test_Exceptions is
                Get(Dates(I));
                exit;
             exception
-               when Length_Error =>
-                  Put("Felaktigt format! ");
                when Format_Error =>
                   Put("Felaktigt format! ");
                when Year_Error =>
@@ -227,5 +228,4 @@ begin
 exception
    when Length_Error =>
       Put("För få inmatade tecken!");
-
 end Test_Exceptions;
